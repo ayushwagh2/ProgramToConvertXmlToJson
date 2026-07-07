@@ -51,7 +51,17 @@ class Program
         string xmlPath = config["Internal_config:xmlPath"];
         string jsonPath = config["Internal_config:jsonPath"];
         string repoPath = config["Internal_config:repoPath"];
-        var skipUISections = File.ReadAllLines(config["Internal_config:skipsections"]).ToHashSet();
+        string skipSectionsPath = config["Internal_config:skipsections"];
+        HashSet<string> skipUISections = new();
+
+        if (!string.IsNullOrWhiteSpace(skipSectionsPath) && File.Exists(skipSectionsPath))
+        {
+            skipUISections = File.ReadAllLines(skipSectionsPath).ToHashSet();
+        }
+        else
+        {
+            Log.Information("skipsections file not found. Continuing without skipped UI sections.");
+        }
         //string ApptypeIdforInternal = config["Internal_config:ApptypeIdforInternal"];
 
         Console.WriteLine("Select conversion option:");
